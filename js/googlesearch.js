@@ -2,6 +2,7 @@
 const searchAdSelectors = [
   'div#taw',
   'div#tads',
+  'div#tvcap',
 ]
 
 const removedAds = []
@@ -36,19 +37,22 @@ function removeElementsBySelector(selector) {
           ) {
           removedAds.push(item)
         }
-        item.style.display = "none"
+        item.style.visibility = "hidden"
         item.style.opacity = "0"
+        item.style.position = "absolute"
     })
   }
+
+  console.log(removedAds)
 }
 
 function createShowAdsButton() {
-  const centerCol = document.querySelector("div#rcnt")
+  const appbar = document.querySelector("div#appbar")
 
   const promptContainer = document.createElement("div")
   promptContainer.style.padding = "10px 0"
-  centerCol.prepend(promptContainer)
-  
+  appbar.append(promptContainer)
+
   const textAdsVisibleText = "Search Ads Visible 😳"
   const textAdsHiddenText = "Search Ads Hidden ✅"
   const buttonAdsVisibleText = "Take Them Away!"
@@ -58,13 +62,18 @@ function createShowAdsButton() {
   const button = createStylizedButton("Bring Them Back")
 
   button.onclick = function (e) {
-    const newDisplayVal = adsAreHidden ? "block" : "none"
-    const newOpacityVal = adsAreHidden ? 1 : 0
+    const newDisplayVal = adsAreHidden ? "visible" : "hidden"
+    const newOpacityVal = adsAreHidden ? "1" : "0"
+    const newPositionVal = adsAreHidden ? "static" : "absolute"
 
     for(ad of removedAds) {
-        ad.style.transition = "all 0.4s linear"
+        ad.style.transition = "all 0.3s ease-in"
         ad.style.opacity = newOpacityVal
         ad.style.visibility = newDisplayVal
+        ad.style.position = newPositionVal
+
+        console.log(ad)
+        console.log(ad.style)
     }
 
     adsAreHidden = !adsAreHidden
