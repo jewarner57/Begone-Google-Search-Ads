@@ -1,7 +1,7 @@
 // List of selectors that describe ad holding containers
 const searchAdSelectors = [
   'div#taw',
-  'div#tads'
+  'div#tads',
 ]
 
 const removedAds = []
@@ -37,34 +37,39 @@ function removeElementsBySelector(selector) {
           removedAds.push(item)
         }
         item.style.display = "none"
+        item.style.opacity = "0"
     })
   }
 }
 
 function createShowAdsButton() {
-  const centerCol = document.querySelector("div#center_col")
+  const centerCol = document.querySelector("div#rcnt")
 
   const promptContainer = document.createElement("div")
-  promptContainer.style.padding = "0 12px"
-  promptContainer.style.border = "2px solid #333"
-  promptContainer.style.borderRadius = "4px"
-
-
+  promptContainer.style.padding = "10px 0"
   centerCol.prepend(promptContainer)
-
   
-  const text = createSylizedText("Search Ads Hidden 😳")
+  const textAdsVisibleText = "Search Ads Visible 😳"
+  const textAdsHiddenText = "Search Ads Hidden ✅"
+  const buttonAdsVisibleText = "Take Them Away!"
+  const buttonAdsHiddenText = "Bring Them Back!"
+
+  const text = createSylizedText(textAdsHiddenText)
   const button = createStylizedButton("Bring Them Back")
 
   button.onclick = function (e) {
     const newDisplayVal = adsAreHidden ? "block" : "none"
+    const newOpacityVal = adsAreHidden ? 1 : 0
 
     for(ad of removedAds) {
-        ad.style.display = newDisplayVal
+        ad.style.transition = "all 0.4s linear"
+        ad.style.opacity = newOpacityVal
+        ad.style.visibility = newDisplayVal
     }
 
     adsAreHidden = !adsAreHidden
-    button.innerHTML = adsAreHidden ? "Bring Them Back" : "Hide the Ads"
+    text.innerHTML = adsAreHidden ? textAdsHiddenText : textAdsVisibleText
+    button.innerHTML = adsAreHidden ? buttonAdsHiddenText : buttonAdsVisibleText 
   }
 
   promptContainer.prepend(button)
@@ -74,7 +79,8 @@ function createShowAdsButton() {
 function createSylizedText(content) {
   const textElem = document.createElement("h1")
   textElem.innerHTML = content
-  textElem.style.fontSize = "1.5em"
+  textElem.style.fontSize = "1.3em"
+  textElem.style.marginBottom = "10px"
 
   return textElem
 }
@@ -86,6 +92,7 @@ function createStylizedButton(title) {
   buttonElem.style.padding = "8px 22px"
   buttonElem.style.border = "none"
   buttonElem.style.borderRadius = "4px"
+  buttonElem.style.marginBottom = "10px"
 
   return buttonElem
 }
