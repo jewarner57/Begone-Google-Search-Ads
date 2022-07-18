@@ -5,6 +5,7 @@ const searchAdSelectors = [
 ]
 
 const removedAds = []
+let adsAreHidden = true
 
 hideAds()
 
@@ -35,7 +36,7 @@ function removeElementsBySelector(selector) {
           ) {
           removedAds.push(item)
         }
-        item.remove()
+        item.style.display = "none"
     })
   }
 }
@@ -43,17 +44,48 @@ function removeElementsBySelector(selector) {
 function createShowAdsButton() {
   const centerCol = document.querySelector("div#center_col")
 
+  const promptContainer = document.createElement("div")
+  promptContainer.style.padding = "0 12px"
+  promptContainer.style.border = "2px solid #333"
+  promptContainer.style.borderRadius = "4px"
+
+
+  centerCol.prepend(promptContainer)
+
+  
+  const text = createSylizedText("Search Ads Hidden 😳")
+  const button = createStylizedButton("Bring Them Back")
+
+  button.onclick = function (e) {
+    const newDisplayVal = adsAreHidden ? "block" : "none"
+
+    for(ad of removedAds) {
+        ad.style.display = newDisplayVal
+    }
+
+    adsAreHidden = !adsAreHidden
+    button.innerHTML = adsAreHidden ? "Bring Them Back" : "Hide the Ads"
+  }
+
+  promptContainer.prepend(button)
+  promptContainer.prepend(text)
+}
+
+function createSylizedText(content) {
   const textElem = document.createElement("h1")
-  textElem.innerHTML = "Search Ads Hidden 😳"
+  textElem.innerHTML = content
   textElem.style.fontSize = "1.5em"
 
+  return textElem
+}
+
+function createStylizedButton(title) {
   const buttonElem = document.createElement("button")
-  buttonElem.innerHTML = "Show"
+  buttonElem.innerHTML = title
   buttonElem.style.backgroundColor = "#1a73e8"
   buttonElem.style.padding = "8px 22px"
   buttonElem.style.border = "none"
   buttonElem.style.borderRadius = "4px"
 
-  centerCol.prepend(buttonElem)
-  centerCol.prepend(textElem)
+  return buttonElem
 }
