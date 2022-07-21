@@ -1,8 +1,10 @@
 // List of selectors that describe ad holding containers
 const searchAdSelectors = [
-  'div#taw',
   'div#tads',
   'div#tvcap',
+  'div.commercial-unit-desktop-rhs',
+  'div.commercial-unit-desktop-lhs',
+  'div.commercial-unit-desktop-top'
 ]
 
 const removedAds = []
